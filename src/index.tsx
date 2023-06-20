@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
@@ -9,12 +8,15 @@ import Layout from "./pages/layout";
 import Category from "./pages/admin/category";
 import AdminLayout from "./pages/layout/admin";
 import ClientLayout from "./pages/layout/client";
-import HomePage from "./pages/client";
+import HomePage from "./pages/client/homePage";
+import SignIn from "./pages/admin/authen/signIn";
+import DashBoard from "./pages/admin/dashboard";
+import { PrivateRoute } from "./PrivateRoute";
 
 const route = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <PrivateRoute component={AdminLayout} />,
     children: [
       {
         path: "/",
@@ -24,12 +26,20 @@ const route = createBrowserRouter([
             path: "/",
             element: <HomePage />,
           },
+          {
+            path: "sign-in",
+            element: <SignIn />,
+          },
         ],
       },
       {
         path: "/admin",
-        element: <AdminLayout />,
+        element: <PrivateRoute component={AdminLayout} />,
         children: [
+          {
+            path: "",
+            element: <DashBoard />,
+          },
           {
             path: "category",
             element: <Category />,
@@ -48,8 +58,3 @@ root.render(
     <RouterProvider router={route} />
   </Provider>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

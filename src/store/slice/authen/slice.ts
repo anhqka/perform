@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-// import { RootState } from "../..";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../..";
 
 interface User {
   name: string;
@@ -24,6 +24,7 @@ export const authenSlice = createSlice({
   initialState,
   reducers: {
     setAuthRedirectResult: (state, { payload }: any) => {
+      
       if (payload.idToken) {
         const currentUser: User = {
           name: payload.displayName,
@@ -32,20 +33,21 @@ export const authenSlice = createSlice({
         };
         state.user = currentUser;
         state.isAuthenticated = true;
+        localStorage.setItem('refreshToken', payload.refreshToken)
       } else {
         state.isAuthenticated = false;
       }
     },
-    setIsGlobalLoading: (state, { payload }) => {
-      state.isLoading = payload
+    setIsGlobalLoading: (state, action : PayloadAction<boolean>) => {
+      state.isLoading = action.payload
     },
   },
   extraReducers: (builder) => {},
 });
 
-export const selectCurrentUser = (state: any) => state?.authenSlice?.user;
-export const selectIsGlobalLoading = (state: any) => state?.authenSlice?.isLoading;
-export const selectIsAuthenticated = (state: any) =>
+export const selectCurrentUser = (state: RootState) => state?.authenSlice?.user;
+export const selectIsGlobalLoading = (state: RootState) => state?.authenSlice?.isLoading;
+export const selectIsAuthenticated = (state: RootState) =>
   state?.authenSlice?.isAuthenticated;
 
 export const { setAuthRedirectResult, setIsGlobalLoading } = authenSlice.actions;

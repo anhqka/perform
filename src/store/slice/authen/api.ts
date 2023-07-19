@@ -3,15 +3,19 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const authenApi = createApi({
   reducerPath: 'authenApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: ''
+    baseUrl: 'http://localhost:3000/api/'
   }),
   endpoints: build => ({
-    login: build.query({
-      query: () => ({
-        url: '/'
+    refreshToken: build.mutation({
+      query: ({refresh}) => ({
+        url: 'refresh_token',
+        method: 'POST',
+        body: {
+          refresh_token: refresh
+        }
       })
     })
   })
 });
 
-// export const {} = authenApi;
+export const {useRefreshTokenMutation} = authenApi;

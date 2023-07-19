@@ -1,15 +1,11 @@
-import { useAppDispatch } from "./store";
-import { getRedirectResult } from "firebase/auth";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useAppDispatch } from './store';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
   selectCurrentUser,
   selectIsAuthenticated,
-  setAuthRedirectResult,
   setIsGlobalLoading,
-} from "./store/slice/authen/slice";
-import { auth } from "./configs";
-import { signInGoogle } from "./store/actions/authenApi";
+} from './store/slice/authen/slice';
 
 interface Props {
   component: React.ComponentType;
@@ -22,23 +18,23 @@ export const PrivateRoute: React.FC<Props> = ({ component: Component }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
-    try {
-      dispatch(setIsGlobalLoading(true))
-      if (!currentUser) {
-        const handleRedirect = async () => {
-          const data: any = await getRedirectResult(auth);
-          console.log(data,'ở đây nè anh tuấn');
-          if (data) {
-            dispatch(setAuthRedirectResult(data._tokenResponse));
-            return;
-          }
-          dispatch(signInGoogle());
-        };
-        handleRedirect();
-      }
-    } catch (error) {
-    } finally {
-      dispatch(setIsGlobalLoading(false))
+    if (!currentUser) {
+      dispatch(setIsGlobalLoading(true));
+      // requestGoogleLogin();
+
+      // const handleRedirect = async () => {
+      //   const data: any = await getRedirectResult(auth);
+
+      //   console.log(data)
+      //   dispatch(setIsGlobalLoading(false));
+      //   if (data) {
+      //     localStorage.setItem('user', JSON.stringify(data.user));
+      //     dispatch(setAuthRedirectResult(data._tokenResponse));
+      //     return;
+      //   }
+      //   dispatch(signInGoogle());
+      // };
+      // handleRedirect();
     }
   }, [currentUser, dispatch]);
 

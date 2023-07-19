@@ -12,7 +12,7 @@ import HomePage from './pages/client/homePage';
 import SignIn from './pages/admin/authen/signIn';
 import DashBoard from './pages/admin/dashboard';
 import Payment from './pages/client/payment';
-import { PrivateRoute } from './PrivateRoute';
+// import { PrivateRoute } from './PrivateRoute';
 import Token from './pages/client/token';
 
 const route = createBrowserRouter([
